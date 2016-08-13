@@ -1,0 +1,12 @@
+QLineEdit#pantalla {
+	background-color: black;
+	color: white;
+	height: 50px;
+	font-family: digital-7;
+	font-size: 50px;
+
+}
+
+QPushButton#calcButton {
+	font-size: 30px;
+}
