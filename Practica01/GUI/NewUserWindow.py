@@ -3,7 +3,31 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QWidget, QLabel, QMessageBox
 
+import os
 import sys
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+cur_path = os.path.dirname(__file__)
+new_path = os.path.relpath('../Code/input.txt',cur_path)
+
+def encrypt(password):
+        lst = []
+        cola = password[len(password)-1]
+        num_cola = ord(cola)+5
+        for i in range(len(password)-1):
+            c = password[i]
+            lst.append(str(ord(c)))
+        lst.append(str(num_cola))
+        pswd = '~'.join(lst)
+        #pswd += '\n'
+        return pswd
+
+def add_user(usuario,password,path_txt):
+        file = open(path_txt,'r+w')
+        lines = file.read()
+        new_user = '\n'+usuario+':' + encrypt(password)
+        file.write(new_user)
+        file.close()
+
 
 #Clase para la ventana de LogIn
 class NewUserWindow(QtGui.QWidget):
@@ -46,7 +70,7 @@ class NewUserWindow(QtGui.QWidget):
 
         usuario = user_input.text()
         password = password_input.text()
-        
+        add_user(str(usuario),str(password),new_path)
         """
         MORUBIO: Aquí debes crear al usuario y guardarlo 
         en un archivo con el cifrado raro este if checa 
@@ -60,9 +84,7 @@ class NewUserWindow(QtGui.QWidget):
             msg.setText("Contraseña o Usuario incorrectos")
             msg.setWindowTitle("Error")
             msg.setStandardButtons(QMessageBox.Ok)
-        else:
-            print usuario
-            print password
+      
         
         
         self.close()

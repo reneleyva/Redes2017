@@ -3,7 +3,15 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QWidget, QLabel, QMessageBox
 from NewUserWindow import NewUserWindow
+
+import os
 import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from Code.Calculator import Calculator
+from Code.ScientificCalculator import ScientificCalculator
+from Constants.Constants import *
+
 
 class Calculadora_UI(QtGui.QWidget):
 	def __init__(self ):
@@ -13,11 +21,11 @@ class Calculadora_UI(QtGui.QWidget):
 
 	def initUI(self):
 		self.pantalla = QtGui.QLineEdit("")
-		self.pantalla.setObjectName("pantalla");
+		self.pantalla.setObjectName(screen);
 		nuevo_boton = QtGui.QPushButton('')
-		botones = ['', 'C', '%', '^', '7', '8', '9', '-', '4', 
-					'5', '6', '/', '1', '2', '3', '*', '0', '.', 
-					'=', '+']
+		botones = ['', CLEAR, MOD, EXP, SEVEN, EIGHT , NINE, MINUS, FOUR, 
+					FIVE, SIX, DIV, ONE, TWO, THREE, MULT, ZERO, DOT, 
+					EQUAL, SUM]
 
 
 		grid = QtGui.QGridLayout()
@@ -35,19 +43,19 @@ class Calculadora_UI(QtGui.QWidget):
 			#Se agrega el evento
 			b.clicked.connect(self.onClick)
 			#se le agrega un "ID"
-			b.setObjectName("calcButton");
+			b.setObjectName(calc_button);
 			#Se agrega al Grid
 			grid.addWidget(b, posiciones[i][0], posiciones[i][1])
 
-		#Le poneun icono al boton de nuevo usuario
-		nuevo_boton.setIcon(QtGui.QIcon('user.png'))
+		#Le pone un icono al boton de nuevo usuario
+		nuevo_boton.setIcon(QtGui.QIcon(user_image))
 		nuevo_boton.setIconSize(QtCore.QSize(24,24))
 		nuevo_boton.clicked.connect(self.nuevoOnClick)
 		grid.addWidget(nuevo_boton, 1, 0)
 
 		self.setLayout(grid)
 		self.setGeometry(500, 200, 200, 200)
-		self.setWindowTitle('Calculadora')
+		self.setWindowTitle(title)
 		self.show()
 
 	def nuevoOnClick(self):
@@ -56,19 +64,26 @@ class Calculadora_UI(QtGui.QWidget):
 
 	def onClick(self):
 		sender = self.sender().text()
-		if (sender == 'C'):
+		if (sender == CLEAR):
 			self.pantalla.clear()
 			self._ScreenText_ = ""
-		elif (sender == '='):
+		elif (sender == EQUAL):
+			scr = self.pantalla.text()
+			cad = str(scr)
+			calc = ScientificCalculator()
+			res = calc.sc_evalue(cad)
+			self.pantalla.clear()
+			self.pantalla.setText(str(res))
+			self._ScreenText_ = ""
 			"""
 			MORUBIO: Aqui el usuario presionó el boton '=' y tienes que llamar 
 			a algo que calcule la expresion, después cambiar el texto de la pantalla con:
 			self.pantalla.setText(resultado) 
 			"""
-			print self.pantalla.text()
+			#print self.pantalla.text()
 			#Limpia la pantalla y el string que lleva la expresion
-			self.pantalla.clear()
-			self._ScreenText_ = ""
+			#self.pantalla.clear()
+			#self._ScreenText_ = ""
 			#self.pantalla.setText(resultado)
 		else:
 			self._ScreenText_ += sender

@@ -3,7 +3,48 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QWidget, QLabel, QMessageBox
 from Calculadora_UI import Calculadora_UI
+
+import os
 import sys
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+
+cur_path = os.path.dirname(__file__)
+new_path = os.path.relpath('../Code/input.txt',cur_path)
+
+"""
+file = open(new_path,'r+w')
+file.write("root:114~111~111~121\n")
+file.close()
+"""
+def decode(asciilist):
+    c = asciilist[len(asciilist)-1]
+    num = int(c)
+    num = num-5
+    password = ""
+    cola = chr(num)
+    for i in range(len(asciilist)-1):
+        n = int(asciilist[i])
+        password += chr(n)
+       
+    password += cola
+        
+    return password
+
+
+    
+
+def load_users():
+    file = open(new_path,'r+w')
+    lines = file.read().split('\n')
+    users = []
+    pswd = []
+    for line in lines:
+        aux = line.split(':')
+        asciilist = aux[1].split('~')
+        psd = decode(asciilist)
+        users.append(aux[0])
+        pswd.append(psd)
+    return zip(users,pswd)
 
 #Clase para la ventana de LogIn
 class LoginWindow(QtGui.QWidget):
@@ -46,19 +87,18 @@ class LoginWindow(QtGui.QWidget):
 
         usuario = user_input.text()
         password = password_input.text()
-        
-        """
-        MORUBIO: Aqui comprueba si las contraseñas 
-        estan correctas e inicia la ventana de la calculadora, 
-        acuerdate que las contraseñas estan cifradas en el archivo. 
-        """
-        if (usuario == "root" and password == "root"):
-            self.close() #Cierra la ventana de Login 
-            #inicia la ventana de la calculadora.
-            self.calc = Calculadora_UI()
-            self.calc.show()
-            
+        lst = load_users()
+        par = (usuario,password)
+        esta_registrado = False
+        i = 0
+        while not esta_registrado and i < len(lst):
+            if(par == lst[i]): esta_registrado = True
+            i+=1
 
+        if(esta_registrado):
+               self.close()
+               self.calc = Calculadora_UI()
+               self.calc.show()
         else: 
             #Despliega un Mensaje de Error
             msg = QMessageBox()
@@ -67,7 +107,7 @@ class LoginWindow(QtGui.QWidget):
             msg.setWindowTitle("Error")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
-            #self.otro.show()
+                #self.otro.show()
 
 
 # MAIN
