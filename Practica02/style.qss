@@ -1,0 +1,23 @@
+QWidget {
+	font: 15pt Arial;
+	background: white;
+}
+QTextEdit { 
+	text-align: bottom;
+	border: none;
+	padding-right: 10; 
+	padding-left: 10; 
+	padding-top: 10; 
+	padding-bottom: 10;
+
+}
+
+QPushButton {
+	max-width: 50px;
+	border-radius: 0px;
+}
+
+QLineEdit {
+	border: none;
+    max-width: 630px;
+}
