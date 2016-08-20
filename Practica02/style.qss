@@ -1,5 +1,5 @@
 QWidget {
-	font: 15pt Arial;
+	font: 14pt Arial;
 	background: white;
 }
 QTextEdit { 
@@ -14,7 +14,6 @@ QTextEdit {
 
 QPushButton {
 	max-width: 50px;
-	border-radius: 0px;
 }
 
 QLineEdit {
