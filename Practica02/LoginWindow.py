@@ -58,9 +58,9 @@ class LoginWindow(QtGui.QWidget):
 
             #MORUBIO Aquí haz tu desmadre yo muestro el chat directamente. 
             self.close()
-            self.chat = ChatWindow()
+            self.chat = ChatWindow(str(puerto), str(contacto)) #Recibe los puertos para imprimirlos en mensajes.
             self.chat.show()
-            
+
             #Para Joderte BORRALO OBVIAMNETE
             self.chat.escribeExterno("Estas por la verga Morua")
             self.chat.escribeExterno("Nadie te quiere")

@@ -9,10 +9,11 @@ import sys
 #Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
-    def __init__(self):
+    def __init__(self, puerto, contacto):
         super(ChatWindow, self).__init__()
         self.initUI()
-
+        self.puertoLocal = puerto
+        self.puertoContacto = contacto
 
     def initUI(self):
         #elementos
@@ -57,8 +58,8 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignRight)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto 5555(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textArea.append("%s<br>" % text)
+        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto "+self.puertoLocal+"(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textArea.append("%s\n" % text)
         self.msg_input.clear()
         """MORUBIO: Aquí tienes que enviar el texto que metió el usuario
             LO anterior lo imprime en el area de texto con colorcitos
@@ -70,7 +71,7 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignLeft)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append("<b style=\"background: #FAA678;\">Puerto 3264: </b>")
+        self.textArea.append("<b style=\"background: #FAA678;\">Puerto "+self.puertoContacto+": </b>")
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
         """MORUBIO: Aquí escribo en la pantalla los mensajes que vienen (La uso en el main), 
