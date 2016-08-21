@@ -23,6 +23,12 @@ QPushButton#acceder {
 	border: none;
 }
 
+
+QMessageBox QPushButton {
+	background: #86B2B3;
+	border None;
+}
+
 QLineEdit#msg {
 	border: none;
     max-width: 630px;

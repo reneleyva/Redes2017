@@ -9,11 +9,15 @@ import sys
 #Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
-    def __init__(self, puerto, contacto):
+    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto):
         super(ChatWindow, self).__init__()
         self.initUI()
-        self.puertoLocal = puerto
-        self.puertoContacto = contacto
+        """MORUBIO COMo puedes ver siempre se sabe los puertos y las ip's 
+        para mostrarlos en los mensajes y que se vea chingón """
+        self.puertoLocal = puertoLocal
+        self.puertoContacto = puertoContacto
+        self.ipLocal = ipLocal
+        self.ipContacto = ipContacto
 
     def initUI(self):
         #elementos
@@ -58,7 +62,7 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignRight)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto "+self.puertoLocal+"(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto "+ self.ipLocal + "/" + self.puertoLocal+"(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
         """MORUBIO: Aquí tienes que enviar el texto que metió el usuario
@@ -71,7 +75,7 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignLeft)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append("<b style=\"background: #FAA678;\">Puerto "+self.puertoContacto+": </b>")
+        self.textArea.append("<b style=\"background: #FAA678;\">Puerto " + self.ipContacto + "/" + self.puertoContacto+": </b>")
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
         """MORUBIO: Aquí escribo en la pantalla los mensajes que vienen (La uso en el main), 
