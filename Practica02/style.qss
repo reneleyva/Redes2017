@@ -1,5 +1,5 @@
 QWidget {
-	font: 14pt Arial;
+	font: 15pt Arial;
 	background: white;
 }
 QTextEdit { 
