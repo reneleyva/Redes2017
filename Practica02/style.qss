@@ -1,6 +1,7 @@
 QWidget {
 	font: 15pt Arial;
 	background: white;
+	color: black;
 }
 
 QTextEdit#area { 
