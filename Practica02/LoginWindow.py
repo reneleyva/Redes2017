@@ -15,8 +15,7 @@ class LoginWindow(QtGui.QWidget):
 
 
     def initUI(self):
-
-        #Despliega un Mensaje de Error
+        #Despliega un Mensaje 
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Question)
         msg.setText(QtGui.QApplication.translate("self", "Elije una opción de comunicación", None, QtGui.QApplication.UnicodeUTF8))
