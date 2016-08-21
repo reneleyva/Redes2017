@@ -2,7 +2,8 @@ QWidget {
 	font: 15pt Arial;
 	background: white;
 }
-QTextEdit { 
+
+QTextEdit#area { 
 	text-align: bottom;
 	border: none;
 	padding-right: 10; 
@@ -12,11 +13,16 @@ QTextEdit {
 
 }
 
-QPushButton {
+QPushButton#send {
 	max-width: 50px;
 }
 
-QLineEdit {
+QPushButton#acceder {
+	background: #86B2B3;
+	border: none;
+}
+
+QLineEdit#msg {
 	border: none;
     max-width: 630px;
 }

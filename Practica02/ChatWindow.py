@@ -6,7 +6,7 @@ from PyQt4.QtGui import QWidget, QLabel, QMessageBox, QTextEdit, QScrollBar
 import os
 import sys
     
-#Clase para la ventana de LogIn
+#Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
     def __init__(self):
@@ -22,6 +22,10 @@ class ChatWindow(QtGui.QWidget):
 
 
         #propiedades
+        self.textArea.setObjectName("area")
+        self.msg_input.setObjectName("msg")
+        self.send_button.setObjectName("send")
+
         self.textArea.setReadOnly(True)
         self.textArea.append("\n"*16)
         # self.scroll_grid = QtGui.QGridLayout(self.textArea)
@@ -53,9 +57,12 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignRight)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append(QtGui.QApplication.translate("self", "<p><b  style=\"background: #86B2B3 ;\">Puerto 5555(Tú): </b></p>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textArea.append("<p>%s<p>" % text)
+        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto 5555(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
+        self.textArea.append("%s<br>" % text)
         self.msg_input.clear()
+        """MORUBIO: Aquí tienes que enviar el texto que metió el usuario
+            LO anterior lo imprime en el area de texto con colorcitos
+            Tienes que enviar la variable 'text' por el medio que quieras. Fuck off"""
 
     # Para escribir en el Area de texto los mensajes que vienen. 
     def escribeExterno(self, text):
@@ -63,24 +70,28 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.setAlignment(QtCore.Qt.AlignLeft)
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append("<p><b  style=\"background: #FAA678;\">Puerto 3264: </b></p>")
-        self.textArea.append("<p>%s<p>" % text)
+        self.textArea.append("<b style=\"background: #FAA678;\">Puerto 3264: </b>")
+        self.textArea.append("%s\n" % text)
         self.msg_input.clear()
+        """MORUBIO: Aquí escribo en la pantalla los mensajes que vienen (La uso en el main), 
+        supongo tendrás que tandrás que llamarla en el main. """
 
 
 
 # MAIN
-def main():
-    app = QtGui.QApplication(sys.argv)
-    stylesheet = open('style.qss').read()
-    app.setStyleSheet(stylesheet)
-    mainWindow = ChatWindow()
-    #Para joderte
-    mainWindow.escribeExterno("Estas por la verga Morua")
-    mainWindow.escribeExterno("Nadie te quiere")
-    mainWindow.escribeExterno("8::::::::::::::::::D~~~~")
-    sys.exit(app.exec_())
+# def main():
+#     app = QtGui.QApplication(sys.argv)
+#     stylesheet = open('style.qss').read()
+#     app.setStyleSheet(stylesheet)
+#     mainWindow = ChatWindow()
+#     #Para joderte
+    # mainWindow.escribeExterno("Estas por la verga Morua")
+    # mainWindow.escribeExterno("Nadie te quiere")
+    # mainWindow.escribeExterno("8::::::::::::::::::D~~~~")
+    # mainWindow.msg_input.setText("8::::::::::::::::::D~~~~")
+#     mainWindow.escribeLocal()
+#     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
