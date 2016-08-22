@@ -5,11 +5,17 @@ from PyQt4.QtGui import QWidget, QLabel, QMessageBox, QTextEdit, QScrollBar
 
 import os
 import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+
+from Channel.ApiServer import *
+from Channel.ApiClient import *
+from Channel.Channel import *
     
 #Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
-    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto):
+    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto,client,apiserver,client_thread,url):
         super(ChatWindow, self).__init__()
         self.initUI()
         """MORUBIO COMo puedes ver siempre se sabe los puertos y las ip's 
@@ -18,6 +24,15 @@ class ChatWindow(QtGui.QWidget):
         self.puertoContacto = puertoContacto
         self.ipLocal = ipLocal
         self.ipContacto = ipContacto
+        self.server = init_local_server(apiserver)
+        self.server.register_introspection_functions()
+        self.server.register_function(set_msg, 'Chat.post')
+        self.server.register_function(get_msg, 'Chat.get')
+        self.server_thread = ServerThread(self.server)
+        self.server_thread.start()
+        self.server_thread.run()
+        self.client = client
+        self.client.connect_server(url)
 
     def initUI(self):
         #elementos
@@ -65,9 +80,9 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto "+ self.ipLocal + "/" + self.puertoLocal+"(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
-        """MORUBIO: Aquí tienes que enviar el texto que metió el usuario
-            LO anterior lo imprime en el area de texto con colorcitos
-            Tienes que enviar la variable 'text' por el medio que quieras. Fuck off"""
+
+        self.client.get_server().Chat.post(str(text))
+        self.client.set_msg(str(self.client.get_server().Chat.get()))
 
     # Para escribir en el Area de texto los mensajes que vienen. 
     def escribeExterno(self, text):
