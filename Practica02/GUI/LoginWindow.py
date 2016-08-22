@@ -3,8 +3,15 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QWidget, QLabel, QMessageBox
 from ChatWindow import ChatWindow
+
+
 import os
 import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
+from Channel.ApiServer import *
+from Channel.ApiClient import *
+from Channel.Channel import *
     
 #Clase para la ventana de LogIn
 class LoginWindow(QtGui.QWidget):
@@ -12,6 +19,10 @@ class LoginWindow(QtGui.QWidget):
     def __init__(self):
         super(LoginWindow, self).__init__()
         self.initUI()
+        self.client = None
+        self.server = None
+        self.client_thread = None
+        self.apiserver = None
 
 
     def initUI(self):
@@ -160,16 +171,22 @@ class LoginWindow(QtGui.QWidget):
             if (puerto < 0 or contacto < 0 or puerto > 65535 or contacto > 65535):
                 raise ValueError()
 
+            
+            self.apiserver = ApiServer(contacto)
+            #iniciamos el servidor local
+            #self.server = init_local_server(self.apiserver)
+
+            #conectamos el cliente al servidor local
+            self.client = ApiClient(puerto)
+            url = 'http://localhost:' + str(contacto)
+
+
             #MORUBIO Aquí haz tu desmadre yo muestro el chat directamente. 
             self.close()
             #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow 
-            self.chat = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1")
+            self.chat = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1",self.client,self.apiserver,self.client_thread,url)
             self.chat.show()
 
-            #Para Joderte BORRALO OBVIAMNETE
-            self.chat.escribeExterno("Estas por la verga Morua")
-            self.chat.escribeExterno("Nadie te quiere")
-            self.chat.escribeExterno("8::::::::::::::::::D~~~~")
 
         except ValueError:
             #Despliega un Mensaje de Error
