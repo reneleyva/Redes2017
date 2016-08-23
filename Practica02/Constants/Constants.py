@@ -7,6 +7,19 @@ from AuxiliarFunctions import *
 BBB = "BALE BERGA LA BIDA"
 ERROR = "DANGER DANGER"
 
-PUERTO_CLIENTE1 = 5001
-PUERTO_CLIENTE2 = 5002
-IP = 12
+#! /usr/bin/env python
+
+
+#####################################################
+# PURPOSE: Archivo con constantes                   #
+#                                                   #
+# Vilchis Dominguez Miguel Alonso                   #
+#       <mvilchis@ciencias.unam.mx>                 #
+#                                                   #
+# Notes:                                            #
+#                                                   #
+# Copyright   16-08-2015                            #
+#                                                   #
+# Distributed under terms of the MIT license.       #
+#####################################################
+CHAT_PORT = 5000

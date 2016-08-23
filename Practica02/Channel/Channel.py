@@ -17,6 +17,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 
 from Constants.Constants import *
 from Constants.AuxiliarFunctions import *
+
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 
@@ -40,24 +41,6 @@ class ServerThread(MyThread):
         self.server.serve_forever()
 
 
-class ClientThread(MyThread):
-    def __init__(self,client,server):
-        MyThread.__init__(self)
-        self.client = client
-        self.server = server
-        self.msg = ''
-
-
-    def run(self):
-        while not self.is_stop():
-            try:   
-                msg = self.server.Chat.get()
-                self.client_thread.set_msg(msg)
-            except socket.error, e:
-                print(BBB)
-            time.sleep(1)
-
-
 """**************************************************
     Constructor de la clase
     @param <str> contact_ip: Si no se trabaja de manera local
@@ -69,36 +52,61 @@ class ClientThread(MyThread):
                 representa el puerto de la instancia del contacto
 **************************************************"""
 class Channel:
-    def __init__(self, contact_ip, my_port,contact_port):
-        self.local = is_local
-        if(is_local):
-            self.my_port = 5000
-            self.contact_ip = IP
-        else:
-            self.my_port = 5000
-            self.contact_ip = contact_ip
-        self.contact_port = contact_port
-        self.client = Client()
+    def __init__(self, contact_ip, contact_port,my_port, chatWindow):
+        self.local = True
+        self.my_ip = None
+        self.contact_ip = None
+        self.my_port = None
+        self.apiserver = None
+        self.api_server_thread = None
         self.server = None
-        self.thread_client = MyThread(self.client,self.server)
+        self.client = None
 
-    def get_client_port(self):
-        return self.contact_port
+        if contact_ip:
+            self.my_ip = get_ip_address()
+            self.contact_ip = contact_ip
+            self.contact_port = CHAT_PORT
+            self.my_port = CHAT_PORT
+            self.local = False
+       
+        else:
+            self.contact_port = contact_port
+            self.my_port = my_port
+       
+        if(self.local):
+            self.apiserver = ApiServer(self.contact_port, chatWindow)
+            self.client = ApiClient(self.my_port)
+            self.server = self.apiserver.server
+            self.api_server_thread = Thread(target=self.server.serve_forever)
+            self.api_server_thread.start()
+        else:
+            self.apiserver = ApiServer(chatWindow)
+            self.client = ApiClient()
+            self.client.init_extern_server(str(contact_ip))
+            self.server = self.apiserver.server
+            self.api_server_thread = Thread(target=self.server.serve_forever)
+            self.api_server_thread.start()
 
-    def get_client_ip(self):
-        return self.contact_ip
 
-    def get_my_port(self):
-        return self.get_my_port
 
-    def get_thread_client(setlf):
-        return self.thread_client
-        
 
         """**************************************************
     Metodo que se encarga de mandar texto al contacto con
     el cual se estableció la conexion
     **************************************************"""
     def send_text(self, text):
-        self.client.set_msg(txt)
+        client_server = self.client.server
+        client_server.sendMessage_wrapper(str(text))
+    """
+        Metodo que agarra el mensaje que tiene el servidor
+    """
+    def get_text(self):
+        client_server = self.client.server
+        self.client.set_msg(str(client_server.echo()))
+
+
+
+
+
+
 

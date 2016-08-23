@@ -12,17 +12,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from Channel.ApiServer import *
 from Channel.ApiClient import *
 from Channel.Channel import *
-    
+
+
 #Clase para la ventana de LogIn
 class LoginWindow(QtGui.QWidget):
 
     def __init__(self):
         super(LoginWindow, self).__init__()
         self.initUI()
-        self.client = None
-        self.server = None
-        self.client_thread = None
-        self.apiserver = None
+        self.channel = None
 
 
     def initUI(self):
@@ -172,28 +170,17 @@ class LoginWindow(QtGui.QWidget):
                 raise ValueError()
 
             
-            self.apiserver = ApiServer(contacto)
-            #iniciamos el servidor local
-            #self.server = init_local_server(self.apiserver)
 
-            #conectamos el cliente al servidor local
-            self.client = ApiClient(puerto)
-            url = 'http://localhost:' + str(contacto)
-
-
-            #MORUBIO Aquí haz tu desmadre yo muestro el chat directamente. 
             self.close()
-            #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow 
-            self.chat = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1",self.client,self.apiserver,self.client_thread,url)
-            self.chat.show()
-
+            #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
+            """...""" 
+            self.gui = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1",self.channel)
+            self.channel = Channel(None,contacto,puerto, self.gui)
+            self.gui.show()
 
         except ValueError:
             #Despliega un Mensaje de Error
             self.despliegaDialogoError("Número de puerto no válido")
-            
-        # print ("Tu puerto: %s" % puerto)
-        # print ("Destino: %s" % contacto)
 
        
 # MAIN

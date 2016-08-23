@@ -11,11 +11,14 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from Channel.ApiServer import *
 from Channel.ApiClient import *
 from Channel.Channel import *
-    
+
+
+
+
 #Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
-    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto,client,apiserver,client_thread,url):
+    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto, channel):
         super(ChatWindow, self).__init__()
         self.initUI()
         """MORUBIO COMo puedes ver siempre se sabe los puertos y las ip's 
@@ -24,15 +27,7 @@ class ChatWindow(QtGui.QWidget):
         self.puertoContacto = puertoContacto
         self.ipLocal = ipLocal
         self.ipContacto = ipContacto
-        self.server = init_local_server(apiserver)
-        self.server.register_introspection_functions()
-        self.server.register_function(set_msg, 'Chat.post')
-        self.server.register_function(get_msg, 'Chat.get')
-        self.server_thread = ServerThread(self.server)
-        self.server_thread.start()
-        self.server_thread.run()
-        self.client = client
-        self.client.connect_server(url)
+        self.channel = channel
 
     def initUI(self):
         #elementos
@@ -81,11 +76,12 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
 
-        self.client.get_server().Chat.post(str(text))
-        self.client.set_msg(str(self.client.get_server().Chat.get()))
+        self.channel.send_text(str(text))
+        #str(self.channel.get_text())
 
     # Para escribir en el Area de texto los mensajes que vienen. 
     def escribeExterno(self, text):
+        text = str(self.channel.get_text())
         if not text: return 
         self.textArea.setAlignment(QtCore.Qt.AlignLeft)
         scroll = self.textArea.verticalScrollBar()
@@ -93,9 +89,8 @@ class ChatWindow(QtGui.QWidget):
         self.textArea.append("<b style=\"background: #FAA678;\">Puerto " + self.ipContacto + "/" + self.puertoContacto+": </b>")
         self.textArea.append("%s\n" % text)
         self.msg_input.clear()
-        """MORUBIO: Aquí escribo en la pantalla los mensajes que vienen (La uso en el main), 
-        supongo tendrás que tandrás que llamarla en el main. """
 
+        
 
 
 # MAIN

@@ -42,5 +42,8 @@ class MyThread(threading.Thread):
     def stop(self):
         self.active = False
 
+    def run(self):
+        pass
+    
     def is_stop(self):
         return not self.active

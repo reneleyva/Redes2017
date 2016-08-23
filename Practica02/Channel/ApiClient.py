@@ -1,41 +1,37 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import xmlrpclib as rpc
+"""**************************************************
+Clase que genera un proxy para poder hacer uso de los 
+procedimientos remotos que ofrece la api del contacto
+ **************************************************"""
+import xmlrpclib
+import sys
+import os
 from ApiServer import *
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 
+from Constants.Constants import *
+from Constants.AuxiliarFunctions import *
 
 class ApiClient:
-    
-    def __init__(self,my_port):
-    	self.name = None
-    	self.server = None
-    	self.msg = None
-    	self.my_port = my_port
+    def __init__(self, contact_port = None):
+        if contact_port:
+            self.server = xmlrpclib.Server('http://localhost' +':'+str(contact_port), allow_none = True)
+        self.msg = ''
+    def init_extern_server(ip):
+        self.server = xmlrpclib.Server(ip,str(CHAT_PORT))
 
     def set_msg(self,msg):
-    	self.msg = msg
+        self.msg = msg
+
     def get_msg(self):
-    	return self.msg
+        return self.msg
 
-    def set_my_port(self,port):
-    	self.my_port = port
-
-    def get_my_port(self):
-    	return self.my_port
-
-
-    def set_name(self,name):
-    	self.name = name
-    def get_name(self):
-    	return self.name
-    
-    def connect_server(self,url):
-    	self.server = rpc.ServerProxy(url,allow_none=True)
-    	#self.server.Session.start(client)
-    
-    def get_server(self):
-    	return self.server
+def main(args):
+   contact_port = int(args[0])
+   api_client = ApiClient(contact_port = contact_port).server
+   api_client.sendMessage_wrapper("Mensaje de cliente a Servidor")
 
 if __name__ == '__main__':
-	cliente.connect_server('http://localhost:8000')
-	server = cliente.get_server()
+   main(sys.argv[1:])
+
