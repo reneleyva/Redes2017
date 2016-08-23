@@ -148,6 +148,9 @@ class LoginWindow(QtGui.QWidget):
                 self.despliegaDialogoError("Numero de IP no válido")
                 return 
         
+        
+        self.channel = Channel(contact_ip,None,None, self.gui)
+
         """MORUBIO aquí las ip's pasaron las prubeas y son validas aquí haz tus 
         desmadre yo mando a llamar a ChatWindow directamente"""
         self.close()
