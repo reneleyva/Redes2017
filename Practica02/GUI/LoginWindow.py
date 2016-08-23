@@ -17,10 +17,11 @@ from Channel.Channel import *
 #Clase para la ventana de LogIn
 class LoginWindow(QtGui.QWidget):
 
-    def __init__(self):
+    def __init__(self, send_image):
         super(LoginWindow, self).__init__()
         self.initUI()
         self.channel = None
+        self.send_image = send_image
 
 
     def initUI(self):
@@ -153,7 +154,7 @@ class LoginWindow(QtGui.QWidget):
         self.close()
         #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow 
         #No sé que puertos esten por defecto, si quieres cambialos. 
-        self.chat = ChatWindow("80", "80", ip_input.text(), contact_ip.text())
+        self.chat = ChatWindow("80", "80", ip_input.text(), contact_ip.text(),self.send_image)
         self.chat.show()
 
 
@@ -175,7 +176,7 @@ class LoginWindow(QtGui.QWidget):
             #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
             """...""" 
             self.channel = Channel(None, contacto, puerto)
-            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel)
+            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel,self.send_image)
             self.channel.setUI(self.chatUI) #!IMPORTANTE
             self.chatUI.show()
 

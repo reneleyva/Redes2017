@@ -18,8 +18,10 @@ class ApiClient:
         if contact_port:
             self.server = xmlrpclib.Server('http://localhost' +':'+str(contact_port), allow_none = True)
         self.msg = ''
+
+        
     def init_extern_server(ip):
-        self.server = xmlrpclib.Server(ip,str(CHAT_PORT))
+        self.server = xmlrpclib.Server('http://' + str(ip) + ':' + str(CHAT_PORT),allow_none=True)
 
     def set_msg(self,msg):
         self.msg = msg

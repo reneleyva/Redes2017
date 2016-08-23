@@ -18,9 +18,9 @@ from Channel.Channel import *
 #Clase para la ventana de Chat
 class ChatWindow(QtGui.QWidget):
 
-    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto, channel):
+    def __init__(self, puertoLocal, puertoContacto, ipLocal, ipContacto, channel,send_image):
         super(ChatWindow, self).__init__()
-        self.initUI()
+        self.initUI(send_image)
         """MORUBIO COMo puedes ver siempre se sabe los puertos y las ip's 
         para mostrarlos en los mensajes y que se vea chingón """
         self.puertoLocal = puertoLocal
@@ -28,8 +28,8 @@ class ChatWindow(QtGui.QWidget):
         self.ipLocal = ipLocal
         self.ipContacto = ipContacto
         self.channel = channel
-
-    def initUI(self):
+        self.send_image = send_image
+    def initUI(self,send_image):
         #elementos
         self.textArea = QtGui.QTextEdit(self)
         self.msg_input = QtGui.QLineEdit(self)
@@ -47,7 +47,7 @@ class ChatWindow(QtGui.QWidget):
         self.msg_input.setPlaceholderText("Envia mensaje")
         self.send_button.setFlat(True)
         #Le pone un icono al boton de nuevo usuario
-        self.send_button.setIcon(QtGui.QIcon("send.png"))
+        self.send_button.setIcon(QtGui.QIcon(str(send_image)))
         self.send_button.setIconSize(QtCore.QSize(32,32))
         self.send_button.clicked.connect(self.escribeLocal)
         self.msg_input.returnPressed.connect(self.send_button.click) #Cuando se presiona ENTER

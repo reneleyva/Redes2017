@@ -1,7 +1,15 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QWidget, QLabel, QMessageBox
-from LoginWindow import LoginWindow
 
+
+import os
+import sys
+
+from GUI.LoginWindow import LoginWindow
+
+
+style = os.path.join('./GUI/style.qss')
+send_imasge = os.path.join('./GUI/send.png')
 
 import os
 import sys
@@ -11,9 +19,9 @@ import sys
 def main():
     app = QtGui.QApplication(sys.argv)
 
-    stylesheet = open('style.qss').read()
+    stylesheet = open(style).read()
     app.setStyleSheet(stylesheet)
-    mainWindow = LoginWindow()
+    mainWindow = LoginWindow(send_imasge)
     sys.exit(app.exec_())
 
 
