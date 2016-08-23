@@ -52,7 +52,7 @@ class ServerThread(MyThread):
                 representa el puerto de la instancia del contacto
 **************************************************"""
 class Channel:
-    def __init__(self, contact_ip, contact_port,my_port, chatWindow):
+    def __init__(self, contact_ip=None, contact_port=None,my_port=None):
         self.local = True
         self.my_ip = None
         self.contact_ip = None
@@ -61,6 +61,8 @@ class Channel:
         self.api_server_thread = None
         self.server = None
         self.client = None
+
+        self.msg = ""#PARA LA UI
 
         if contact_ip:
             self.my_ip = get_ip_address()
@@ -74,13 +76,13 @@ class Channel:
             self.my_port = my_port
        
         if(self.local):
-            self.apiserver = ApiServer(self.contact_port, chatWindow)
+            self.apiserver = ApiServer(self.contact_port)
             self.client = ApiClient(self.my_port)
             self.server = self.apiserver.server
             self.api_server_thread = Thread(target=self.server.serve_forever)
             self.api_server_thread.start()
         else:
-            self.apiserver = ApiServer(chatWindow)
+            self.apiserver = ApiServer()
             self.client = ApiClient()
             self.client.init_extern_server(str(contact_ip))
             self.server = self.apiserver.server
@@ -96,13 +98,20 @@ class Channel:
     **************************************************"""
     def send_text(self, text):
         client_server = self.client.server
-        client_server.sendMessage_wrapper(str(text))
+        self.msg = client_server.sendMessage_wrapper(str(text))
     """
         Metodo que agarra el mensaje que tiene el servidor
     """
     def get_text(self):
         client_server = self.client.server
         self.client.set_msg(str(client_server.echo()))
+
+    # Tiene como único proposito pasarle la UI a 
+    # ApiServer para que pueda imprimir cuando reciba un mensaje
+    def setUI(self, chatUI):
+        self.chatUI = chatUI
+        self.apiserver.setUI(chatUI)
+    
 
 
 

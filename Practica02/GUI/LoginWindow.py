@@ -148,9 +148,6 @@ class LoginWindow(QtGui.QWidget):
                 self.despliegaDialogoError("Numero de IP no válido")
                 return 
         
-        
-        self.channel = Channel(contact_ip,None,None, self.gui)
-
         """MORUBIO aquí las ip's pasaron las prubeas y son validas aquí haz tus 
         desmadre yo mando a llamar a ChatWindow directamente"""
         self.close()
@@ -177,24 +174,25 @@ class LoginWindow(QtGui.QWidget):
             self.close()
             #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
             """...""" 
-            self.gui = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1",self.channel)
-            self.channel = Channel(None,contacto,puerto, self.gui)
-            self.gui.show()
+            self.channel = Channel(None, contacto, puerto)
+            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel)
+            self.channel.setUI(self.chatUI) #!IMPORTANTE
+            self.chatUI.show()
 
         except ValueError:
             #Despliega un Mensaje de Error
             self.despliegaDialogoError("Número de puerto no válido")
 
        
-# MAIN
-def main():
-    app = QtGui.QApplication(sys.argv)
+# # MAIN
+# def main():
+#     app = QtGui.QApplication(sys.argv)
 
-    stylesheet = open('style.qss').read()
-    app.setStyleSheet(stylesheet)
-    mainWindow = LoginWindow()
-    sys.exit(app.exec_())
+#     stylesheet = open('style.qss').read()
+#     app.setStyleSheet(stylesheet)
+#     mainWindow = LoginWindow()
+#     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

@@ -69,25 +69,26 @@ class ChatWindow(QtGui.QWidget):
     def escribeLocal(self):
         text = self.msg_input.text()
         if not text: return 
-        self.textArea.setAlignment(QtCore.Qt.AlignRight)
+        text = text.toUtf8()
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append(QtGui.QApplication.translate("self", "<b  style=\"background: #86B2B3 ;\">Puerto "+ self.ipLocal + "/" + self.puertoLocal+"(Tú): </b>", None, QtGui.QApplication.UnicodeUTF8))
-        self.textArea.append("%s\n" % text)
+        self.textArea.setAlignment(QtCore.Qt.AlignRight)
+        self.textArea.append(QtGui.QApplication.translate("self", "<p style=\"background: white ;\"><b  style=\"background: #86B2B3 ;\">Puerto "+ self.ipLocal + "/" + self.puertoLocal+"(Tú): </b>"+'<br>'+str(text)+"</p><br>", None, QtGui.QApplication.UnicodeUTF8))
         self.msg_input.clear()
-
-        self.channel.send_text(str(text))
-        #str(self.channel.get_text())
+        self.textArea.setAlignment(QtCore.Qt.AlignRight)
+        self.channel.send_text(text)
 
     # Para escribir en el Area de texto los mensajes que vienen. 
     def escribeExterno(self, text):
-        text = str(self.channel.get_text())
+        # text = self.channel.get_text()
         if not text: return 
         self.textArea.setAlignment(QtCore.Qt.AlignLeft)
+        self.textArea.append(QtGui.QApplication.translate("self", "<p style=\"background: white ;\"><b style=\"background: #FAA678;\">Puerto " + self.ipContacto + "/" + self.puertoContacto+": </b> "+'<br>'+text+"</p><br>", None, QtGui.QApplication.UnicodeUTF8))
         scroll = self.textArea.verticalScrollBar()
         scroll.setValue(scroll.maximum())
-        self.textArea.append("<b style=\"background: #FAA678;\">Puerto " + self.ipContacto + "/" + self.puertoContacto+": </b>")
-        self.textArea.append("%s\n" % text)
+        self.textArea.setAlignment(QtCore.Qt.AlignLeft) 
+        # self.textArea.append("%s" % text)
+        # scroll.setValue(scroll.maximum())
         self.msg_input.clear()
 
         

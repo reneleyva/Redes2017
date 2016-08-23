@@ -9,7 +9,7 @@ from Constants.Constants import *
 
 
 class ApiServer():
-    def __init__(self,server_port, chatWindow):
+    def __init__(self, server_port=None):
         
         self.port = server_port if server_port else CHAT_PORT
         self.server = SimpleXMLRPCServer(('localhost',int(self.port)),allow_none= True)
@@ -18,9 +18,13 @@ class ApiServer():
         self.funtionWrapper = FunctionWrapper()
         self.server.register_instance(self.funtionWrapper)
         self.msg = ''
-        self.chatWindow = chatWindow
 
 
+
+    #Para que pueda imprimir los mensajes que vienen. 
+    def setUI(self, chatUI):
+        self.chatUI = chatUI
+        self.funtionWrapper.setUI(self.chatUI)
 
 class FunctionWrapper:
     """ **************************************************
@@ -28,15 +32,20 @@ class FunctionWrapper:
     ************************************************** """
     def __init__(self):
         print "Se construye las funciones"
-   
+    
+    
+    #Para que pueda imprimir los mensajes que vienen. 
+    def setUI(self, chatUI):
+        self.chatUI = chatUI
+
     """ **************************************************
     Procedimiento que ofrece nuestro servidor, este metodo sera llamado
     por el cliente con el que estamos hablando, debe de
     hacer lo necesario para mostrar el texto en nuestra pantalla.
     ************************************************** """
-    def sendMessage_wrapper(self, chat, message):
+    def sendMessage_wrapper(self, message):
         self.msg = message
-        chatWindow.escribeExterno(message)
+        self.chatUI.escribeExterno(message)
         print "El:"+ message+"\n"
     """ **************************************************
     Procedimiento que ofrece nuestro servidor, este metodo sera llamado
@@ -47,11 +56,13 @@ class FunctionWrapper:
         return self.msg
 
 
+
 def main(args):
    myPort = int(args[0])
    server = MyApiServer(myPort).server
    api_server_thread = Thread(target=server.serve_forever)
    api_server_thread.start()
+
 if __name__ == '__main__':
    main(sys.argv[1:])
 
