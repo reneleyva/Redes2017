@@ -25,7 +25,7 @@ class LoginWindow(QtGui.QWidget):
 
 
     def initUI(self):
-        #Despliega un Mensaje 
+        #Despliega un Mensaje
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Question)
         msg.setText(QtGui.QApplication.translate("self", "Elije una opción de comunicación", None, QtGui.QApplication.UnicodeUTF8))
@@ -57,7 +57,7 @@ class LoginWindow(QtGui.QWidget):
         self.contact_input.setFixedWidth(200)
         self.login_button.clicked.connect(lambda: self.access_port(self.port_input, self.contact_input))
         self.contact_input.returnPressed.connect(self.login_button.click) #Cuando se presiona ENTER
-        
+
         #Layout
         grid = QtGui.QGridLayout()
 
@@ -88,7 +88,7 @@ class LoginWindow(QtGui.QWidget):
         self.contact_input.setFixedWidth(200)
         self.login_button.clicked.connect(lambda: self.access_ip(self.port_input, self.contact_input))
         self.contact_input.returnPressed.connect(self.login_button.click) #Cuando se presiona ENTER
-        
+
         #Layout
         grid = QtGui.QGridLayout()
 
@@ -117,10 +117,10 @@ class LoginWindow(QtGui.QWidget):
 
     def access_ip(self, ip_input, contact_ip):
 
-        #Si son vacios 
+        #Si son vacios
         if not ip_input or not contact_ip:
             self.despliegaDialogoError("Número de IP no válido")
-            return 
+            return
 
         ip1 = ip_input.text().split('.')
         ip2 = contact_ip.text().split('.')
@@ -128,55 +128,55 @@ class LoginWindow(QtGui.QWidget):
         #Le hace pruebas a las IP's
         if (len(ip1) != 4 or len(ip2) != 4):
             self.despliegaDialogoError("Numero de IP no válido")
-            return 
+            return
 
         #Checa si son numeros y si están en rango
         for n in ip1:
             try:
                 i = int(n)
                 if i > 255 or i < 0:
-                    raise ValueError() 
+                    raise ValueError()
             except ValueError:
                 self.despliegaDialogoError("Numero de IP no válido")
-                return 
+                return
 
         for n in ip2:
             try:
                 i = int(n)
                 if i > 255 or i < 0:
-                    raise ValueError() 
+                    raise ValueError()
             except ValueError:
                 self.despliegaDialogoError("Numero de IP no válido")
-                return 
-        
-        """MORUBIO aquí las ip's pasaron las prubeas y son validas aquí haz tus 
+                return
+
+        """MORUBIO aquí las ip's pasaron las prubeas y son validas aquí haz tus
         desmadre yo mando a llamar a ChatWindow directamente"""
         self.close()
-        #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow 
-        #No sé que puertos esten por defecto, si quieres cambialos. 
-        self.chat = ChatWindow("80", "80", ip_input.text(), contact_ip.text(),self.send_image)
+        #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
+        #No sé que puertos esten por defecto, si quieres cambialos.
+        self.chat = ChatWindow("80", "80", ip_input.text(), contact_ip.text(), self.send_image)
         self.chat.show()
 
 
     def access_port(self, port_input=None, contact_input=None):
-        """MORUBIO: las variable 'puerto' es el puerto local y 
-        contacto el puerto destino primero checo si es un numero 
+        """MORUBIO: las variable 'puerto' es el puerto local y
+        contacto el puerto destino primero checo si es un numero
         valido de puerto sino despliega error."""
-        
-        try: 
+
+        try:
             puerto = int(port_input.text())
             contacto = int(contact_input.text())
             #Puerto en rango
             if (puerto < 0 or contacto < 0 or puerto > 65535 or contacto > 65535):
                 raise ValueError()
 
-            
+
 
             self.close()
             #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
-            """...""" 
+            """..."""
             self.channel = Channel(None, contacto, puerto)
-            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel,self.send_image)
+            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel, self.send_image)
             self.channel.setUI(self.chatUI) #!IMPORTANTE
             self.chatUI.show()
 
@@ -184,7 +184,7 @@ class LoginWindow(QtGui.QWidget):
             #Despliega un Mensaje de Error
             self.despliegaDialogoError("Número de puerto no válido")
 
-       
+
 # # MAIN
 # def main():
 #     app = QtGui.QApplication(sys.argv)
