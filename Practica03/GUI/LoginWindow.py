@@ -12,35 +12,34 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 from Channel.ApiServer import *
 from Channel.ApiClient import *
 from Channel.Channel import *
+from Constants import Constants
 
 
 #Clase para la ventana de LogIn
 class LoginWindow(QtGui.QWidget):
 
-    def __init__(self, send_image):
+    def __init__(self):
         super(LoginWindow, self).__init__()
         self.initUI()
-        self.channel = None
-        self.send_image = send_image
-
+        #self.channel = None
 
     def initUI(self):
         #Despliega un Mensaje
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Question)
-        msg.setText(QtGui.QApplication.translate("self", "Elije una opción de comunicación", None, QtGui.QApplication.UnicodeUTF8))
-        msg.setWindowTitle("Opciones")
-        msg.addButton(QtGui.QPushButton('Local'), QtGui.QMessageBox.YesRole)
-        msg.addButton(QtGui.QPushButton('Externa'), QtGui.QMessageBox.NoRole)
-        res = msg.exec_()
+        self.msg = QMessageBox()
+        self.msg.setIcon(QMessageBox.Question)
+        self.msg.setText(QtGui.QApplication.translate("self", "Elije una opción de comunicación", None, QtGui.QApplication.UnicodeUTF8))
+        self.msg.setWindowTitle("Opciones")
+        self.msg.addButton(QtGui.QPushButton('Local'), QtGui.QMessageBox.YesRole)
+        self.msg.addButton(QtGui.QPushButton('Externa'), QtGui.QMessageBox.NoRole)
+        res = self.msg.exec_()
 
         #Decide cual se presiono y que dialogo mostrar
         if res == 0:
             self.init_dialog_local()
-            msg.close()
+            self.msg.close()
         else:
             self.init_dialog_externo()
-            msg.close()
+            self.msg.close()
 
     def init_dialog_local(self):
         #elementos
@@ -154,8 +153,10 @@ class LoginWindow(QtGui.QWidget):
         self.close()
         #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
         #No sé que puertos esten por defecto, si quieres cambialos.
-        self.chat = ChatWindow("80", "80", ip_input.text(), contact_ip.text(), self.send_image)
-        self.chat.show()
+
+        """GLOBAL"""
+        Constants.CHANNEL = ChatWindow("80", "80", ip_input.text(), contact_ip.text())
+        Constants.CHANNEL.show()
 
 
     def access_port(self, port_input=None, contact_input=None):
@@ -170,15 +171,14 @@ class LoginWindow(QtGui.QWidget):
             if (puerto < 0 or contacto < 0 or puerto > 65535 or contacto > 65535):
                 raise ValueError()
 
-
-
             self.close()
             #MORUBIO ChatWindow recibe también las Ip's como argumento, ver el constructor de ChatWindow
-            """..."""
-            self.channel = Channel(None, contacto, puerto)
-            self.chatUI = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1", self.channel, self.send_image)
-            self.channel.setUI(self.chatUI) #!IMPORTANTE
-            self.chatUI.show()
+            """GLOBAL"""
+            Constants.CHANNEL = Channel(None, contacto, puerto)
+            Constants.CHAT_WINDOW = ChatWindow(str(puerto), str(contacto), "127.0.0.1", "127.0.0.1")
+            #Constants.CHANNEL.setUI(Constants.CHAT_WINDOW) #!IMPORTANTE
+            self.close()
+            Constants.CHAT_WINDOW.show()
 
         except ValueError:
             #Despliega un Mensaje de Error

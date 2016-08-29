@@ -1,25 +1,21 @@
 #! /usr/bin/env python
-
-#TODO
-
+import os
 from AuxiliarFunctions import *
 
-BBB = "BALE BERGA LA BIDA"
-ERROR = "DANGER DANGER"
+CHANNEL = None
+CHAT_WINDOW = None
+MAIN_APP = None
+SEND_IMG = os.path.join('./GUI/send.png')
+VOICE_IMG = os.path.join('./GUI/vol.png')
+MUTE_IMG = os.path.join('./GUI/mute.png')
+STYLE = './GUI/style.qss'
+RECORD_AUDIO = None
+#PARA RecordAudio
+CHUNK = 1024
+WIDTH = 2
+CHANNELS = 2
+RATE = 84100
+RECORD_SECONDS = 5
 
-#! /usr/bin/env python
 
-
-#####################################################
-# PURPOSE: Archivo con constantes                   #
-#                                                   #
-# Vilchis Dominguez Miguel Alonso                   #
-#       <mvilchis@ciencias.unam.mx>                 #
-#                                                   #
-# Notes:                                            #
-#                                                   #
-# Copyright   16-08-2015                            #
-#                                                   #
-# Distributed under terms of the MIT license.       #
-#####################################################
 CHAT_PORT = 5000

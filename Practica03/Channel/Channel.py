@@ -15,7 +15,7 @@ import socket
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 
-from Constants.Constants import *
+from Constants import Constants
 from Constants.AuxiliarFunctions import *
 
 from SimpleXMLRPCServer import SimpleXMLRPCServer
@@ -70,11 +70,11 @@ class Channel:
             self.contact_port = CHAT_PORT
             self.my_port = CHAT_PORT
             self.local = False
-       
+
         else:
             self.contact_port = contact_port
             self.my_port = my_port
-       
+
         if(self.local):
             self.apiserver = ApiServer(self.contact_port)
             self.client = ApiClient(self.my_port)
@@ -99,23 +99,14 @@ class Channel:
     def send_text(self, text):
         client_server = self.client.server
         self.msg = client_server.sendMessage_wrapper(str(text))
+
+    """def send_audio_data(self, data):
+        client_server = self.client.server
+        client_server.sendData_wrapper(str(data))"""
+
     """
         Metodo que agarra el mensaje que tiene el servidor
     """
     def get_text(self):
         client_server = self.client.server
         self.client.set_msg(str(client_server.echo()))
-
-    # Tiene como único proposito pasarle la UI a 
-    # ApiServer para que pueda imprimir cuando reciba un mensaje
-    def setUI(self, chatUI):
-        self.chatUI = chatUI
-        self.apiserver.setUI(chatUI)
-    
-
-
-
-
-
-
-
