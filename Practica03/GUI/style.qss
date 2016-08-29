@@ -4,17 +4,21 @@ QWidget {
 	color: black;
 }
 
-QTextEdit#area { 
+QTextEdit#area {
 	text-align: bottom;
 	border: none;
-	padding-right: 10; 
-	padding-left: 10; 
-	padding-top: 10; 
+	padding-right: 10;
+	padding-left: 10;
+	padding-top: 10;
 	padding-bottom: 10;
 
 }
 
 QPushButton#send {
+	max-width: 50px;
+}
+
+QPushButton#voice {
 	max-width: 50px;
 }
 
