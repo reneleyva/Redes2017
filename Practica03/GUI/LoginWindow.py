@@ -155,8 +155,9 @@ class LoginWindow(QtGui.QWidget):
         #No sé que puertos esten por defecto, si quieres cambialos.
 
         """GLOBAL"""
-        Constants.CHANNEL = ChatWindow("80", "80", ip_input.text(), contact_ip.text())
-        Constants.CHANNEL.show()
+        Constants.CHANNEL = Channel(contact_ip, None, None)
+        Constants.CHAT_WINDOW = ChatWindow("80", "80", ip_input.text(), contact_ip.text())
+        Constants.CHAT_WINDOW.show()
 
 
     def access_port(self, port_input=None, contact_input=None):

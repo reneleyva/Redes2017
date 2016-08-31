@@ -35,15 +35,12 @@ import threading
 
 class MyThread(threading.Thread):
 
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.active = True
+    def __init__(self,target,name):
+        super(MyThread,self).__init__(target=target,name=name)
+        self.__stop = threading.Event()
 
-    def stop(self):
-        self.active = False
+    def stopT(self):
+        self.__stop.set()
 
-    def run(self):
-        pass
-    
-    def is_stop(self):
-        return not self.active
+    def isStop(self):
+        return self.__stop.isSet()

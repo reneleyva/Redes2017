@@ -76,22 +76,23 @@ class Channel:
             self.my_port = my_port
 
         if(self.local):
-            self.apiserver = ApiServer(self.contact_port)
-            self.client = ApiClient(self.my_port)
+            self.apiserver = ApiServer(self.contact_port,None)
+            self.client = ApiClient(self.my_port,None)
             self.server = self.apiserver.server
-            self.api_server_thread = Thread(target=self.server.serve_forever)
-            self.api_server_thread.start()
+
         else:
-            self.apiserver = ApiServer()
-            self.client = ApiClient()
-            self.client.init_extern_server(str(contact_ip))
+            self.apiserver = ApiServer(None,my_ip)
+            self.client = ApiClient(None,contact_ip)
             self.server = self.apiserver.server
-            self.api_server_thread = Thread(target=self.server.serve_forever)
-            self.api_server_thread.start()
 
+        self.api_server_thread = Thread(target=self.server.serve_forever)
+        self.api_server_thread.start()
 
+    def get_client(self):
+        return self.client
 
-
+    def get_server(self):
+        return self.server
         """**************************************************
     Metodo que se encarga de mandar texto al contacto con
     el cual se estableció la conexion

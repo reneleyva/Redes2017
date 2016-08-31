@@ -12,9 +12,11 @@ from Channel.ApiServer import *
 from Channel.ApiClient import *
 from Channel.Channel import *
 from Channel.RecordAudio import *
+from Constants.AuxiliarFunctions import *
 from Constants import Constants
+from Constants.Constants import *
 import LoginWindow
-from threading import Thread
+import threading
 
 
 #Clase para la ventana de Chat
@@ -108,16 +110,21 @@ class ChatWindow(QtGui.QWidget):
     #!IMPORTANTE##################################################################
 
     def voice(self):
-        if (Constants.RECORD_AUDIO is None):
-            Constants.RECORD_AUDIO = RecordAudio()
-            Constants.RECORD_AUDIO.start()
+        cl = Constants.CHANNEL.get_client()
+        if (not Constants.END_CALL):
+            cl.init_call()
+            #cl.send_audio()
             self.voice_button.setIcon(QtGui.QIcon(Constants.MUTE_IMG))
             #ESCRIBIR LLAMADA INICIADA!!
             #self.textArea.setAlignment(QtCore.Qt.Center)
             self.textArea.append("LLAMADA INICIADA...")
+            Constants.CHANNEL.send_text("RECIBIENDO LLAMADA")
+            Constants.END_CALL = True
         else:
-            Constants.RECORD_AUDIO.stop()
+            cl.end_call()
             self.voice_button.setIcon(QtGui.QIcon(Constants.VOICE_IMG))
+            Constants.END_CALL = False
+
 """
 Clase para desplegar Mensaje de llamada, Es necesaria esta clase para que reciba
 Un objecto RecordAudio y lo pueda detener cuando se presione "Terminar LLamada"

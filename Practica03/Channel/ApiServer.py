@@ -6,25 +6,30 @@ import sys
 from threading import Thread
 from Constants.AuxiliarFunctions import *
 from Constants import Constants
-from Constants import Constants
-
-
+from Constants.Constants import *
+import pyaudio
 class ApiServer():
-    def __init__(self, server_port=None):
+    def __init__(self, server_port=None, ip = None):
 
         self.port = server_port if server_port else CHAT_PORT
-        self.server = SimpleXMLRPCServer(('localhost',int(self.port)),allow_none= True)
+        if(server_port):
+            self.server = SimpleXMLRPCServer(('localhost',int(self.port)),allow_none= True)
+        else:
+            self.server = SimpleXMLRPCServer((str(ip), CHAT_PORT),allow_none=True)
+
         self.server.register_introspection_functions()
         self.server.register_multicall_functions()
         self.funtionWrapper = FunctionWrapper()
         self.server.register_instance(self.funtionWrapper)
-
+        self.stream = None
 
 class FunctionWrapper:
     """ **************************************************
     Constructor de la clase
     ************************************************** """
     def __init__(self):
+        self.buffer = list()
+        self.stream = None
         print "Se construye las funciones"
 
 
@@ -34,14 +39,18 @@ class FunctionWrapper:
     hacer lo necesario para mostrar el texto en nuestra pantalla.
     ************************************************** """
     def sendMessage_wrapper(self, message):
-        self.msg = message
         Constants.CHAT_WINDOW.escribeExterno(message)
         #print "El:"+ message+"\n"
 
-    def sendData_wrapper(self, data):
-        print data
-        #print type(data)
-        #self.record.stream.write(str(data), 1024)
+    def get_audio(self,audio):
+        p = pyaudio.PyAudio()
+        FORMAT = p.get_format_from_width(2)
+        stream = p.open(format = FORMAT, channels = CHANNELS, rate = RATE, output= True, frames_per_buffer = CHUNK)
+        data = audio.data
+        stream.write(data)
+        stream.close()
+        p.terminate()
+
     """ **************************************************
     Procedimiento que ofrece nuestro servidor, este metodo sera llamado
     por el cliente con el que estamos hablando, debe de
@@ -49,6 +58,8 @@ class FunctionWrapper:
     ************************************************** """
     def echo(self):
         return self.msg
+
+
 
 
 def main(args):
