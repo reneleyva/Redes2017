@@ -36,6 +36,7 @@ class ApiClient:
       self.thread_audio_listen = None
       self.thread_video_send = None
       self.thread_video_listen = None
+      self.image = None 
       #self.cap = cv2.VideoCapture(0)
 
 
@@ -92,6 +93,7 @@ class ApiClient:
         if self.thread_video_send.isStop(): 
           return 1
         ret ,frame = self.cap.read()
+        self.image = cv2.imread(toString(frame))
         cv2.imshow('Yo',frame)
         data = xmlrpclib.Binary(self.toString(frame))
         self.server.play_video(data)

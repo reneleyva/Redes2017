@@ -131,6 +131,8 @@ class ChatWindow(QtGui.QWidget):
             cl.end_video_call()
             Constants.END_CALL = False
             self.voice_button.setIcon(QtGui.QIcon(Constants.VOICE_IMG))
+
+            
     def voice(self):
         cl = Constants.CHANNEL.get_client()
         if (not Constants.END_CALL):

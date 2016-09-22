@@ -43,7 +43,7 @@ def graba():
     while(True):
         ret, frame = cap.read()
         #Aqui en vez de mostar agarramos
-        image = cv2.imread(frame) 
+        image = cv2.imread(toString(frame)) #Ahuevo
         cv2.imshow('Cliente',frame) ##graba cliente
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
