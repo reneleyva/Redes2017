@@ -66,7 +66,7 @@ class ChatWindow(QtGui.QWidget):
         self.voice_button.clicked.connect(self.voice)
 
         #Le pone icono al de llamada
-        call_image = os.path.join(Constants.VOICE_IMG)
+        call_image = os.path.join(Constants.CALL_IMG)
         self.call_button.setIcon(QtGui.QIcon(call_image))
         self.call_button.setFlat(True)
         self.call_button.setIconSize(QtCore.QSize(32,32))

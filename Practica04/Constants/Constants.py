@@ -7,6 +7,7 @@ CHAT_WINDOW = None
 MAIN_APP = None
 SEND_IMG = os.path.join('./GUI/send.png')
 VOICE_IMG = os.path.join('./GUI/vol.png')
+CALL_IMG = os.path.join('./GUI/call.png')
 MUTE_IMG = os.path.join('./GUI/mute.png')
 STYLE = './GUI/style.qss'
 END_CALL = False

@@ -7,8 +7,9 @@
 
 # Some inspiration taken from: http://www.morethantechnical.com/2009/03/05/qt-opencv-combined-for-face-detecting-qwidgets/
 
-import cv
+
 import cv2
+from cv2.cv import*
 import sys
 from PyQt4.QtCore import QPoint, QTimer
 from PyQt4.QtGui import QApplication, QImage, QPainter, QWidget
@@ -41,9 +42,9 @@ class VideoWidget(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self)
-        self._capture = cv2.VideoCapture(0)
+        self._capture = cv.VideoCapture(0)
         # Take one frame to query height
-        #frame = cv.QueryFrame(self._capture)
+        frame = cv.QueryFrame(self._capture)
         ret,frame = self._capture.read()
         self.setMinimumSize(frame.width, frame.height)
         self.setMaximumSize(self.minimumSize())
@@ -71,9 +72,9 @@ class VideoWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    height, width, channel = cvImg.shape
-    bytesPerLine = 3 * width
-    qImg = QImage(cvImg.data, width, height, bytesPerLine, QImage.Format_RGB888)
+    # height, width, channel = cvImg.shape
+    # bytesPerLine = 3 * width
+    # qImg = QImage(cvImg.data, width, height, bytesPerLine, QImage.Format_RGB888)
     widget = VideoWidget()
     widget.setWindowTitle('PyQt - OpenCV Test')
     cap = cv2.VideoCapture(0)
